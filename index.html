@@ -14,9 +14,10 @@
 <body>
   <h1 id="letter-display">A</h1>
 <script>
+var displayDiv = document.querySelector('#letter-display');
 
 var displayIt = function(msg) {
-  document.querySelector('#letter-display').innerText = msg;
+  displayDiv.innerText = msg;
 };
 
 var getRandom = function(things)  {
@@ -32,8 +33,11 @@ var spellWord = function(word) {
 
 var speakLetterAtIndex = function(word, i) {
   var msg = new SpeechSynthesisUtterance(word[i]);
-  msg.onend = function(e) {
+  msg.onstart = function(e) {
     highlightLetter(i);
+  }
+  msg.onend = function(e) {
+    unHighlightLetter(i);
   }
   speechSynthesis.speak(msg);
 };
@@ -63,17 +67,23 @@ var highlightLetter = function(i) {
   document.querySelector('#letter_' + i).setAttribute('class', 'active');
 };
 
+var unHighlightLetter = function(i) {
+  document.querySelector('#letter_' + i).setAttribute('class', 'inactive');
+};
+
 var highlightedLetterGame = function() {
     var randomWord = getRandom(['cat', 'dog', 'pig', 'sky', 'fly', 'my',
-    'Dad', 'Mama', 'Emily', 'Maeve']);
+    'Dad', 'Mama', 'Emily', 'Maeve', 'bird', 'car', 'fish']);
     displayWithSpansPerLetter(randomWord);
     spellWord(randomWord);
 };
 
 function main() {
   //singleLetterGame();
-
   highlightedLetterGame();
+  displayDiv.addEventListener('click', function(e) {
+    highlightedLetterGame();
+  });
 }
 main();
 </script>
