@@ -1,0 +1,57 @@
+<html>
+<head>
+  <style>
+  h1 {
+    color : black;
+    font-size: 305px;
+    text-align:center;
+  }
+  </style>
+</head>
+<body>
+  <h1 id="letter-display">A</h1>
+<script>
+
+var displayIt = function(msg) {
+  document.querySelector('#letter-display').innerText = msg;
+};
+
+var getRandom = function(things)  {
+  return things[Math.floor(Math.random()*things.length)];
+};
+
+var spellWord = function(word) {
+  for(var i=0; i < word.length; i++) {
+    speakString(word[i]);
+  }
+  speakString("That spells: " + word);
+};
+var speakString = function(msg) {
+  var msg = new SpeechSynthesisUtterance(msg);
+  window.speechSynthesis.speak(msg);
+};
+
+var singleLetterGame = function() {
+  var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+                'M', 'N', 'O','P','Q','R','S','T','U','V','W','X','Y', 'Z'];
+  var letter = getRandomLetter(letters);
+  displayIt(letter);
+  speakString(letter);
+}
+
+var highlightedLetterGame = function() {
+    var randomWord = getRandom(['cat', 'dog', 'pig', 'sky', 'fly', 'my',
+    'Dad', 'Mama', 'Emily', 'Maeve']);
+    displayIt(randomWord);
+    spellWord(randomWord);
+};
+
+function main() {
+  //singleLetterGame();
+
+  highlightedLetterGame();
+}
+main();
+</script>
+</body>
+</html>
