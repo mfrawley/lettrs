@@ -1,6 +1,9 @@
 <html>
 <head>
   <style>
+  body {
+    font-family: sans-serif;
+  }
   h1 {
     color : black;
     font-size: 305px;
@@ -9,12 +12,23 @@
   .active {
     color: red;
   }
+  #next {
+    width:100%;
+    height: 100;
+    font-size: 90;
+    color: rgba(0,0,0,.8);
+    border-radius: 2px;
+    text-decoration: none;
+    background-color: #E6E6E6;
+  }
   </style>
 </head>
 <body>
   <h1 id="letter-display">A</h1>
+  <button id="next">Next word please</button>
 <script>
 var displayDiv = document.querySelector('#letter-display');
+var nextBtn = document.querySelector('#next');
 
 var displayIt = function(msg) {
   displayDiv.innerText = msg;
@@ -33,6 +47,7 @@ var spellWord = function(word) {
 
 var speakLetterAtIndex = function(word, i) {
   var msg = new SpeechSynthesisUtterance(word[i]);
+  msg.lang = 'en-US';
   msg.onstart = function(e) {
     highlightLetter(i);
   }
@@ -44,6 +59,7 @@ var speakLetterAtIndex = function(word, i) {
 
 var speakString = function(msg) {
   var msg = new SpeechSynthesisUtterance(msg);
+  msg.lang = 'en-US';
   speechSynthesis.speak(msg);
 };
 
@@ -73,7 +89,7 @@ var unHighlightLetter = function(i) {
 
 var highlightedLetterGame = function() {
     var randomWord = getRandom(['cat', 'dog', 'pig', 'sky', 'fly', 'my',
-    'Dad', 'Mama', 'Emily', 'Maeve', 'bird', 'car', 'fish']);
+    'dad', 'mama', 'emily', 'maeve', 'bird', 'car', 'fish']);
     displayWithSpansPerLetter(randomWord);
     spellWord(randomWord);
 };
@@ -81,7 +97,8 @@ var highlightedLetterGame = function() {
 function main() {
   //singleLetterGame();
   highlightedLetterGame();
-  displayDiv.addEventListener('click', function(e) {
+  nextBtn.addEventListener('click', function(e) {
+    e.preventDefault();
     highlightedLetterGame();
   });
 }
