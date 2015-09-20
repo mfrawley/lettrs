@@ -6,6 +6,9 @@
     font-size: 305px;
     text-align:center;
   }
+  .active {
+    color: red;
+  }
   </style>
 </head>
 <body>
@@ -22,13 +25,22 @@ var getRandom = function(things)  {
 
 var spellWord = function(word) {
   for(var i=0; i < word.length; i++) {
-    speakString(word[i]);
+    speakLetterAtIndex(word, i);
   }
   speakString("That spells: " + word);
 };
+
+var speakLetterAtIndex = function(word, i) {
+  var msg = new SpeechSynthesisUtterance(word[i]);
+  msg.onend = function(e) {
+    highlightLetter(i);
+  }
+  speechSynthesis.speak(msg);
+};
+
 var speakString = function(msg) {
   var msg = new SpeechSynthesisUtterance(msg);
-  window.speechSynthesis.speak(msg);
+  speechSynthesis.speak(msg);
 };
 
 var singleLetterGame = function() {
@@ -39,10 +51,22 @@ var singleLetterGame = function() {
   speakString(letter);
 }
 
+var displayWithSpansPerLetter = function(word) {
+  var s = '';
+  for(var i=0; i < word.length; i++) {
+    s += '<span id="letter_'+i+'">'+word[i]+'</span>';
+  }
+  document.querySelector('#letter-display').innerHTML = s;
+}
+
+var highlightLetter = function(i) {
+  document.querySelector('#letter_' + i).setAttribute('class', 'active');
+};
+
 var highlightedLetterGame = function() {
     var randomWord = getRandom(['cat', 'dog', 'pig', 'sky', 'fly', 'my',
     'Dad', 'Mama', 'Emily', 'Maeve']);
-    displayIt(randomWord);
+    displayWithSpansPerLetter(randomWord);
     spellWord(randomWord);
 };
 
