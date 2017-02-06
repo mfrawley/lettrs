@@ -1,109 +1,14 @@
 <html manifest="lettrs.appcache">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-  body {
-    font-family: sans-serif;
-  }
-  h1 {
-    color : black;
-    font-size: 105px;
-    text-align:center;
-  }
-  .active {
-    color: red;
-  }
-  #next {
-    width:100%;
-    height: 100;
-    font-size: 30;
-    color: rgba(0,0,0,.8);
-    border-radius: 2px;
-    text-decoration: none;
-    background-color: #E6E6E6;
-  }
-  </style>
+  <link rel="stylesheet" href="letters.css">
 </head>
 <body>
   <h1 id="letter-display">A</h1>
+  <img src="" id="word_image" />
+  <img src="" id="word_two" />
   <button id="next">Next word please</button>
-<script>
-var displayDiv = document.querySelector('#letter-display');
-var nextBtn = document.querySelector('#next');
 
-var displayIt = function(msg) {
-  displayDiv.innerText = msg;
-};
-
-var getRandom = function(things)  {
-  return things[Math.floor(Math.random()*things.length)];
-};
-
-var spellWord = function(word) {
-  for(var i=0; i < word.length; i++) {
-    speakLetterAtIndex(word, i);
-  }
-  speakString("That spells: " + word);
-};
-
-var speakLetterAtIndex = function(word, i) {
-  var msg = new SpeechSynthesisUtterance(word[i]);
-  msg.lang = 'en-US';
-  msg.onstart = function(e) {
-    highlightLetter(i);
-  }
-  msg.onend = function(e) {
-    unHighlightLetter(i);
-  }
-  speechSynthesis.speak(msg);
-};
-
-var speakString = function(msg) {
-  var msg = new SpeechSynthesisUtterance(msg);
-  msg.lang = 'en-US';
-  speechSynthesis.speak(msg);
-};
-
-var singleLetterGame = function() {
-  var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-                'M', 'N', 'O','P','Q','R','S','T','U','V','W','X','Y', 'Z'];
-  var letter = getRandomLetter(letters);
-  displayIt(letter);
-  speakString(letter);
-}
-
-var displayWithSpansPerLetter = function(word) {
-  var s = '';
-  for(var i=0; i < word.length; i++) {
-    s += '<span id="letter_'+i+'">'+word[i]+'</span>';
-  }
-  document.querySelector('#letter-display').innerHTML = s;
-}
-
-var highlightLetter = function(i) {
-  document.querySelector('#letter_' + i).setAttribute('class', 'active');
-};
-
-var unHighlightLetter = function(i) {
-  document.querySelector('#letter_' + i).setAttribute('class', 'inactive');
-};
-
-var highlightedLetterGame = function() {
-    var randomWord = getRandom(['cat', 'dog', 'pig', 'sky', 'fly', 'my',
-    'dad', 'mama', 'emily', 'maeve', 'bird', 'car', 'fish']);
-    displayWithSpansPerLetter(randomWord);
-    spellWord(randomWord);
-};
-
-function main() {
-  //singleLetterGame();
-  highlightedLetterGame();
-  nextBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    highlightedLetterGame();
-  });
-}
-main();
-</script>
+<script src="lettrs.js"></script>
 </body>
 </html>
